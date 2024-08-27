@@ -11,6 +11,10 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 reps = 0
+ADD_CHECK_MARK = "✓"
+timer = None
+minus = 1
+reset = 0
 # ---------------------------- TIMER RESET ------------------------------- # 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
@@ -28,7 +32,17 @@ def break_count(count):
         count_down(WORK_MIN)
 
 
+def stop_countdown():
+    global timer, ADD_CHECK_MARK, minus, reset
+    label_mark.config(text="✓")
+
+    canvas.itemconfig(timer_text, text=f"00:00")
+    minus = 100
+
+
 def start_timer():
+    global minus
+    minus = 1
     count_count_down = count_down(25 * 1)
     work_sec = WORK_MIN * 60
     short_break_sec = SHORT_BREAK_MIN * 60
@@ -36,7 +50,10 @@ def start_timer():
 
 
 def count_down(count):
-    global reps
+
+    global ADD_CHECK_MARK, reps, reset
+    if reset != 0:
+        count = 0
     if reps > 5:
         return print('Game Over')
     count_min = math.floor(count / 60)
@@ -50,12 +67,12 @@ def count_down(count):
     canvas.itemconfig(timer_text, text=f"{count_min}: {count_sec}")
 
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        window.after(1000, count_down, count - minus)
     elif count == 0:
         reps += 1
-        add_check_mark = check_mark + "✓" * reps
+        ADD_CHECK_MARK = ADD_CHECK_MARK + "✓" * reps
         print('mark added')
-        label_mark.config(text=add_check_mark)
+        label_mark.config(text=ADD_CHECK_MARK)
         if reps < 5:
             break_count(SHORT_BREAK_MIN)
         elif reps == 5:
@@ -86,7 +103,7 @@ label1.grid(column=1, row=0)
 button_start = tkinter.Button(text="Start", command=start_timer)
 button_start.grid(column=0, row=3)
 
-button_reset = tkinter.Button(text="Reset")
+button_reset = tkinter.Button(text="Reset", command=stop_countdown)
 button_reset.grid(column=3, row=3)
 
 
