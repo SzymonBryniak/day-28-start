@@ -48,7 +48,6 @@ def start_timer():
     short_break_sec = SHORT_BREAK_MIN * 60
     long_break_sec = LONG_BREAK_MIN * 60
 
-
 def count_down(count):
 
     global ADD_CHECK_MARK, reps, reset
