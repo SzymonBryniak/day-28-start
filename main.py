@@ -34,10 +34,9 @@ def break_count(count):
 
 def stop_countdown():
     global timer, ADD_CHECK_MARK, minus, reset
-    label_mark.config(text="✓")
-
-    canvas.itemconfig(timer_text, text=f"00:00")
     minus = 100
+    label_mark.config(text="✓")
+    canvas.itemconfig(timer_text, text=f"00:00")
 
 
 def start_timer():
@@ -47,6 +46,7 @@ def start_timer():
     work_sec = WORK_MIN * 60
     short_break_sec = SHORT_BREAK_MIN * 60
     long_break_sec = LONG_BREAK_MIN * 60
+
 
 def count_down(count):
 
@@ -58,7 +58,7 @@ def count_down(count):
     count_min = math.floor(count / 60)
     count_sec = count % 60
 
-    if count_sec == 0:
+    if count_sec <= 0:
         count_sec = "00"
     elif count_sec < 10:
         count_sec = f"0{count_sec}"
@@ -76,6 +76,8 @@ def count_down(count):
             break_count(SHORT_BREAK_MIN)
         elif reps == 5:
             break_count(LONG_BREAK_MIN)
+    elif count < 0:
+        canvas.itemconfig(timer_text, text=f"00:00")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
