@@ -23,13 +23,18 @@ reset = 0
 
 
 def break_count(count):
+    global minus
     count_min = math.floor(count / 1)
     count_sec = count * 1
-    canvas.itemconfig(timer_text, text=f"0: 0{count_sec}")
-    if count > 0:
-        window.after(1000, break_count, count - 1)
+    if count_sec <= 0:
+        count_sec = "00"
+    elif count > 0:
+        window.after(1000, break_count, count - minus)
     elif count == 0:
         count_down(WORK_MIN)
+    elif count_sec <= 0:
+        count_sec = "00"
+    canvas.itemconfig(timer_text, text=f"0: {count_sec}")
 
 
 def stop_countdown():
@@ -49,10 +54,7 @@ def start_timer():
 
 
 def count_down(count):
-
-    global ADD_CHECK_MARK, reps, reset
-    if reset != 0:
-        count = 0
+    global ADD_CHECK_MARK, reps
     if reps > 5:
         return print('Game Over')
     count_min = math.floor(count / 60)
@@ -63,13 +65,12 @@ def count_down(count):
     elif count_sec < 10:
         count_sec = f"0{count_sec}"
 
-    canvas.itemconfig(timer_text, text=f"{count_min}: {count_sec}")
-
     if count > 0:
+        canvas.itemconfig(timer_text, text=f"{count_min}: {count_sec}")
         window.after(1000, count_down, count - minus)
     elif count == 0:
         reps += 1
-        ADD_CHECK_MARK = ADD_CHECK_MARK + "✓" * reps
+        ADD_CHECK_MARK += "✓"
         print('mark added')
         label_mark.config(text=ADD_CHECK_MARK)
         if reps < 5:
@@ -77,16 +78,15 @@ def count_down(count):
         elif reps == 5:
             break_count(LONG_BREAK_MIN)
     elif count < 0:
+
         canvas.itemconfig(timer_text, text=f"00:00")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 
-
 window = Tk()
 window.title("Pomodoro")
 window.config(padx=100, pady=50, bg=YELLOW)
-
 
 canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
 tomato_img = PhotoImage(file="tomato.png")
