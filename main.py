@@ -25,22 +25,23 @@ reset = 0
 
 def break_count(count):
     global minus, reps
-    additional_zero = 0
-    count_min = math.floor(count / 1)
+
     count_sec = count * 1
-    # if minus == 100:
-    #     canvas.itemconfig(timer_text, text=f"00:00")
-    #     return
+    if reps > 5:
+        canvas.itemconfig(timer_text, text=f"00:00")
     if count_sec <= 0:
         count_sec = "0"
     elif count > 0:
         window.after(1000, break_count, count - minus)
     if count == 0:
         count_down(WORK_MIN)
-
         additional_zero = ''
-
-    canvas.itemconfig(timer_text, text=f"0: 0{count_sec}")
+    if minus == 100:
+        canvas.itemconfig(timer_text, text=f"00:00")
+    elif count >= 10:
+        canvas.itemconfig(timer_text, text=f"0:{count_sec}")
+    else:
+        canvas.itemconfig(timer_text, text=f"0:0{count_sec}")
 
 
 def stop_countdown():
@@ -74,16 +75,16 @@ def count_down(count):
     if minus == 100:
         canvas.itemconfig(timer_text, text=f"00:00")
     elif count > 0:
-        canvas.itemconfig(timer_text, text=f"{count_min}: {count_sec}")
+        canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
         window.after(1000, count_down, count - minus)
     elif count == 0:
         reps += 1
         ADD_CHECK_MARK += "✓"
         print('mark added')
         label_mark.config(text=ADD_CHECK_MARK)
-        if reps < 5:
+        if reps < 4:
             break_count(SHORT_BREAK_MIN)
-        elif reps == 5:
+        elif reps >= 4:
             break_count(LONG_BREAK_MIN)
     elif count < 0:
 
