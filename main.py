@@ -38,7 +38,7 @@ def break_count(count):
         additional_zero = ''
     if minus == 100:
         canvas.itemconfig(timer_text, text=f"00:00")
-        label1.config(text="Timer")
+        label1.config(text="Timer", fg=YELLOW)
     elif count >= 10:
         canvas.itemconfig(timer_text, text=f"0:{count_sec}")
     else:
@@ -52,8 +52,6 @@ def stop_countdown():
     canvas.itemconfig(timer_text, text=f"00:00")
 
 
-
-
 def start_timer():
     global minus
     minus = 1
@@ -65,7 +63,7 @@ def start_timer():
 
 def count_down(count):
     global ADD_CHECK_MARK, reps
-    label1.config(text="Work")
+    label1.config(text="Work", fg="green")
     if reps > 5:
         return print('Game Over')
     count_min = math.floor(count / 60)
@@ -78,7 +76,7 @@ def count_down(count):
 
     if minus == 100:
         canvas.itemconfig(timer_text, text=f"00:00")
-        label1.config(text="Timer")
+        label1.config(text="Timer", fg=YELLOW)
     elif count > 0:
         canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
         window.after(1000, count_down, count - minus)
